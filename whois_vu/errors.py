@@ -1,0 +1,2 @@
+class QueryNotMatchRegexp(Exception):
+    pass
