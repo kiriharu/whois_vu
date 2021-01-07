@@ -11,11 +11,14 @@ class WhoisVuAPIBase:
 
     r_expression = "*"
 
-    def __init__(self, source: Source):
-        self.session = Session()
+    def __init__(self, source: Source, session: Session = None, *args, **kwargs):
+        if not session:
+            self.session = Session()
+        else:
+            self.session = session
         self.source = source
 
-    def check(self, query: str, **kwargs):
+    def validate(self, query: str, **kwargs):
         expression = re.compile(self.r_expression)
         if not expression.match(query):
             raise QueryNotMatchRegexp
@@ -28,11 +31,11 @@ class DomainSource(WhoisVuAPIBase):
 
     r_expression = "^[A-Za-z]+$"
 
-    def __init__(self):
-        super().__init__(Source.DOMAIN)
+    def __init__(self, **kwargs):
+        super().__init__(Source.DOMAIN, **kwargs)
 
     def get(self, query: str, **kwargs) -> DomainResponse:
-        self.check(query)
+        self.validate(query)
         res = self.session.get(
             API_URL, params=dict(**kwargs, q=query)
         )
