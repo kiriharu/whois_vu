@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "whois_vu"
-version = "0.2.0"
+version = "0.3.0"
 description = "Synchronous python wrapper for api.whois.vu"
 authors = ["kiriharu <kiriharu@yandex.ru>"]
 

@@ -27,12 +27,8 @@ class TLDResponse(_TLDWithDefaultsResponse, _TLDBaseResponse):
 
 
 @dataclass
-class _WhoisBaseResponse:
-    expires: int
-
-
-@dataclass
-class WhoisResponse(_TLDWithDefaultsResponse, _WhoisBaseResponse, _TLDBaseResponse):
+class WhoisResponse(_TLDWithDefaultsResponse, _TLDBaseResponse):
+    expires: Optional[str] = None
     registrar: Optional[str] = None
     deletion: Optional[int] = None
 

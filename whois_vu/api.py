@@ -1,6 +1,6 @@
 from requests import Session
-from whois_vu.atypes import Source
-from whois_vu.errors import QueryNotMatchRegexp
+from whois_vu.atypes import Source, Available
+from whois_vu.errors import QueryNotMatchRegexp, IncorrectZone
 from whois_vu.adataclasses import TLDResponse, WhoisResponse
 import re
 
@@ -54,5 +54,8 @@ class WhoisSource(WhoisVuAPIBase):
         res = self.session.get(
             API_URL, params=dict(**kwargs, q=query)
         )
-        return WhoisResponse(**res.json())
+        whois_rsp = WhoisResponse(**res.json())
+        if "Incorrect Zone" in whois_rsp.whois or whois_rsp.available == Available.INCORRECT:
+            raise IncorrectZone
+        return whois_rsp
 
