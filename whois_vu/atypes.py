@@ -3,8 +3,8 @@ from enum import Enum
 
 class Source(str, Enum):
     WHOIS = ""
-    DEFAULT = WHOIS
-    DOMAIN = DEFAULT
+    DEFAULT = ""
+    TLD = ""
     IP = "ip"
     MANUAL = "manual"
     DIG = "dig"

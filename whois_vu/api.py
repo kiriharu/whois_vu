@@ -1,7 +1,7 @@
 from requests import Session
 from whois_vu.atypes import Source
 from whois_vu.errors import QueryNotMatchRegexp
-from whois_vu.adataclasses import DomainResponse
+from whois_vu.adataclasses import TLDResponse, WhoisResponse
 import re
 
 API_URL = "http://api.whois.vu/"
@@ -27,16 +27,32 @@ class WhoisVuAPIBase:
         raise NotImplementedError
 
 
-class DomainSource(WhoisVuAPIBase):
+class TLDSource(WhoisVuAPIBase):
 
     r_expression = "^[A-Za-z]+$"
 
     def __init__(self, **kwargs):
-        super().__init__(Source.DOMAIN, **kwargs)
+        super().__init__(Source.TLD, **kwargs)
 
-    def get(self, query: str, **kwargs) -> DomainResponse:
+    def get(self, query: str, **kwargs) -> TLDResponse:
         self.validate(query)
         res = self.session.get(
             API_URL, params=dict(**kwargs, q=query)
         )
-        return DomainResponse(**res.json())
+        return TLDResponse(**res.json())
+
+
+class WhoisSource(WhoisVuAPIBase):
+
+    r_expression = r"^[\w\d_-]+\.[\w\d_-]+(\.[\w\d_-]+)*$"
+
+    def __init__(self, **kwargs):
+        super().__init__(Source.WHOIS, **kwargs)
+
+    def get(self, query: str, **kwargs) -> WhoisResponse:
+        self.validate(query)
+        res = self.session.get(
+            API_URL, params=dict(**kwargs, q=query)
+        )
+        return WhoisResponse(**res.json())
+
