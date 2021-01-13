@@ -3,6 +3,9 @@ from typing import Optional, List
 
 from whois_vu.atypes import Available
 
+# Many values can be not returned from API
+# All time like expires, created or deletion in unixtime
+
 
 @dataclass
 class _TLDBaseResponse:
@@ -14,7 +17,7 @@ class _TLDBaseResponse:
 
 @dataclass
 class _TLDWithDefaultsResponse:
-    created: Optional[int] = None  # unixtime
+    created: Optional[int] = None
     statuses: Optional[List[str]] = None
 
 
@@ -25,11 +28,11 @@ class TLDResponse(_TLDWithDefaultsResponse, _TLDBaseResponse):
 
 @dataclass
 class _WhoisBaseResponse:
-    registrar: str
     expires: int
-    deletion: int
 
 
 @dataclass
 class WhoisResponse(_TLDWithDefaultsResponse, _WhoisBaseResponse, _TLDBaseResponse):
-    pass
+    registrar: Optional[str] = None
+    deletion: Optional[int] = None
+

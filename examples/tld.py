@@ -13,5 +13,5 @@ except QueryNotMatchRegexp as e:
     print("Got exception")
 
 source2 = WhoisSource()
-r3 = source2.get("kiriha.ru")
-print(r3)
+for src in ["kiriha.ru", "nic.gay"]:
+    print(source2.get(src))
